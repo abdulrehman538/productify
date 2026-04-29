@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Product</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #17202a;
+        background:
+            linear-gradient(135deg, rgba(28, 87, 148, 0.88), rgba(17, 121, 111, 0.88)),
+            #eef3f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 16px;
+    }
+
+    .page {
+        width: 100%;
+        max-width: 520px;
+    }
+
+    .form-panel {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 22px 70px rgba(16, 30, 54, 0.26);
+        padding: 34px;
+    }
+
+    .form-header {
+        margin-bottom: 28px;
+    }
+
+    h2 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        line-height: 1.2;
+        color: #101827;
+    }
+
+    .subtitle {
+        margin: 0;
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    form p {
+        margin: 0 0 18px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #253244;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background: #f8fafc;
+        color: #101827;
+        font: inherit;
+        padding: 12px 13px;
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #11796f;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(17, 121, 111, 0.14);
+    }
+
+    .errorlist {
+        margin: 0 0 8px;
+        padding: 10px 12px;
+        list-style: none;
+        border-radius: 6px;
+        background: #fff1f2;
+        color: #be123c;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .save-button {
+        width: 100%;
+        border: 0;
+        border-radius: 6px;
+        background: #11796f;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 13px 18px;
+        margin-top: 8px;
+        transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+        box-shadow: 0 12px 26px rgba(17, 121, 111, 0.28);
+    }
+
+    .save-button:hover {
+        background: #0f6b63;
+        transform: translateY(-1px);
+        box-shadow: 0 16px 32px rgba(17, 121, 111, 0.32);
+    }
+
+    .save-button:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 18px rgba(17, 121, 111, 0.24);
+    }
+
+    @media (max-width: 540px) {
+        body {
+            align-items: flex-start;
+            padding-top: 22px;
+        }
+
+        .form-panel {
+            padding: 24px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+{% if user.is_authenticated %}
+    <div style="position:absolute; top:20px; right:20px;">
+        <a href="/logout/" style="
+            text-decoration:none;
+            background:#37bad1;
+            color:rgb(14, 6, 64);
+            padding:8px 14px;
+            border-radius:6px;
+            font-weight:bold;
+        ">
+            Logout
+        </a>
+    </div>
+{% endif %}
+<div style="position:absolute; top:20px; right:120px;">
+        <a href="/my_products/" style="
+            text-decoration:none;
+            background:#37bad1;
+            color:rgb(14, 6, 64);
+            padding:8px 14px;
+            border-radius:6px;
+            font-weight:bold;
+        ">
+            My Products
+        </a>
+    </div>
+<main class="page">
+    <section class="form-panel">
+        <div class="form-header">
+    {% if user.is_authenticated %}
+    <p style="margin-bottom:10px; font-weight:bold; text-align:center; color:#00bfff;">
+        Welcome, {{ user.username }}
+    </p>
+        {% endif %} 
+            <h2>Add Product</h2>
+            <p class="subtitle">Enter the product details below and save them to your catalog.</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="save-button" type="submit">Save Product</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>
+
+</form>
