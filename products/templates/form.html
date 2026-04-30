@@ -3,60 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Product</title>
+<title>{% if product %}Edit Product{% else %}Add Product{% endif %}</title>
 <style>
-    * {
-        box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
         margin: 0;
         min-height: 100vh;
         font-family: Arial, Helvetica, sans-serif;
         color: #17202a;
-        background:
-            linear-gradient(135deg, rgba(28, 87, 148, 0.88), rgba(17, 121, 111, 0.88)),
-            #eef3f7;
+        background: #eef3f7;
+    }
+    .topbar {
+        background: #ffffff;
+        border-bottom: 1px solid #dbe4ee;
+        padding: 14px 24px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        padding: 32px 16px;
+        justify-content: space-between;
+        gap: 16px;
     }
-
-    .page {
-        width: 100%;
-        max-width: 520px;
+    .brand {
+        color: #11796f;
+        font-size: 22px;
+        font-weight: 800;
+        text-decoration: none;
     }
-
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .nav a {
+        border-radius: 6px;
+        background: #dcefed;
+        color: #0f615b;
+        min-height: 38px;
+        padding: 9px 14px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+    }
+    main {
+        width: min(520px, calc(100% - 32px));
+        margin: 32px auto;
+    }
     .form-panel {
         background: #ffffff;
+        border: 1px solid #dbe4ee;
         border-radius: 8px;
-        box-shadow: 0 22px 70px rgba(16, 30, 54, 0.26);
+        box-shadow: 0 14px 36px rgba(16, 30, 54, 0.08);
         padding: 34px;
     }
-
-    .form-header {
-        margin-bottom: 28px;
-    }
-
-    h2 {
+    h1 {
         margin: 0 0 8px;
         font-size: 28px;
         line-height: 1.2;
         color: #101827;
     }
-
     .subtitle {
-        margin: 0;
+        margin: 0 0 28px;
         color: #64748b;
         font-size: 15px;
         line-height: 1.5;
     }
-
     form p {
         margin: 0 0 18px;
     }
-
     label {
         display: block;
         margin-bottom: 7px;
@@ -64,7 +76,6 @@
         font-weight: 700;
         color: #253244;
     }
-
     input,
     textarea {
         width: 100%;
@@ -77,19 +88,16 @@
         outline: none;
         transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     }
-
     textarea {
         min-height: 120px;
         resize: vertical;
     }
-
     input:focus,
     textarea:focus {
         border-color: #11796f;
         background: #ffffff;
         box-shadow: 0 0 0 4px rgba(17, 121, 111, 0.14);
     }
-
     .errorlist {
         margin: 0 0 8px;
         padding: 10px 12px;
@@ -100,7 +108,6 @@
         font-size: 14px;
         line-height: 1.4;
     }
-
     .save-button {
         width: 100%;
         border: 0;
@@ -112,84 +119,51 @@
         font-weight: 700;
         padding: 13px 18px;
         margin-top: 8px;
-        transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
         box-shadow: 0 12px 26px rgba(17, 121, 111, 0.28);
     }
-
     .save-button:hover {
         background: #0f6b63;
-        transform: translateY(-1px);
-        box-shadow: 0 16px 32px rgba(17, 121, 111, 0.32);
     }
-
-    .save-button:active {
-        transform: translateY(0);
-        box-shadow: 0 8px 18px rgba(17, 121, 111, 0.24);
-    }
-
-    @media (max-width: 540px) {
-        body {
+    @media (max-width: 560px) {
+        .topbar {
             align-items: flex-start;
-            padding-top: 22px;
+            flex-direction: column;
         }
-
         .form-panel {
             padding: 24px;
-        }
-
-        h2 {
-            font-size: 24px;
         }
     }
 </style>
 </head>
 <body>
-{% if user.is_authenticated %}
-    <div style="position:absolute; top:20px; right:20px;">
-        <a href="/logout/" style="
-            text-decoration:none;
-            background:#37bad1;
-            color:rgb(14, 6, 64);
-            padding:8px 14px;
-            border-radius:6px;
-            font-weight:bold;
-        ">
-            Logout
-        </a>
-    </div>
-{% endif %}
-<div style="position:absolute; top:20px; right:120px;">
-        <a href="/my_products/" style="
-            text-decoration:none;
-            background:#37bad1;
-            color:rgb(14, 6, 64);
-            padding:8px 14px;
-            border-radius:6px;
-            font-weight:bold;
-        ">
-            My Products
-        </a>
-    </div>
-<main class="page">
+<header class="topbar">
+    <a class="brand" href="{% url 'home' %}">Productify</a>
+    <nav class="nav">
+        <a href="{% url 'home' %}">Dashboard</a>
+        <a href="{% url 'myproduct' %}">My Products</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+</header>
+
+<main>
     <section class="form-panel">
-        <div class="form-header">
-    {% if user.is_authenticated %}
-    <p style="margin-bottom:10px; font-weight:bold; text-align:center; color:#00bfff;">
-        Welcome, {{ user.username }}
-    </p>
-        {% endif %} 
-            <h2>Add Product</h2>
-            <p class="subtitle">Enter the product details below and save them to your catalog.</p>
-        </div>
+        <h1>{% if product %}Edit Product{% else %}Add Product{% endif %}</h1>
+        <p class="subtitle">
+            {% if product %}
+                Update this product in your catalog.
+            {% else %}
+                Enter the product details below and save them to your catalog.
+            {% endif %}
+        </p>
 
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <button class="save-button" type="submit">Save Product</button>
+            <button class="save-button" type="submit">
+                {% if product %}Save Changes{% else %}Save Product{% endif %}
+            </button>
         </form>
     </section>
 </main>
 </body>
 </html>
-
-</form>

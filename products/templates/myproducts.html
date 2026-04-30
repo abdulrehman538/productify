@@ -1,88 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Products</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Products</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #17202a;
+        background: #eef3f7;
+    }
+    .topbar {
+        background: #ffffff;
+        border-bottom: 1px solid #dbe4ee;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    .brand {
+        color: #11796f;
+        font-size: 22px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .nav a,
+    .action,
+    .delete-button {
+        border: 0;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        padding: 8px 12px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .nav a,
+    .action {
+        background: #11796f;
+        color: #ffffff;
+    }
+    .nav .secondary {
+        background: #dcefed;
+        color: #0f615b;
+    }
+    main {
+        width: min(1000px, calc(100% - 32px));
+        margin: 32px auto;
+    }
+    .container {
+        background: white;
+        border: 1px solid #dbe4ee;
+        border-radius: 8px;
+        padding: 28px;
+        box-shadow: 0 14px 36px rgba(16, 30, 54, 0.08);
+    }
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-end;
+        margin-bottom: 20px;
+    }
+    h1 {
+        margin: 0 0 6px;
+        color: #101827;
+        font-size: 30px;
+    }
+    .muted {
+        color: #64748b;
+        margin: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th {
+        color: #475569;
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+    th, td {
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+        vertical-align: top;
+    }
+    tr:hover {
+        background: #f8fafc;
+    }
+    .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .delete-button {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    @media (max-width: 760px) {
+        .topbar,
+        .header-row {
+            align-items: flex-start;
+            flex-direction: column;
         }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #17202a;
-            background:
-                linear-gradient(135deg, rgba(28, 87, 148, 0.88), rgba(17, 121, 111, 0.88)),
-                #eef3f7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 32px 16px;
-        }
-
-        .container {
+        table, tbody, tr, td {
+            display: block;
             width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 22px 70px rgba(16, 30, 54, 0.26);
         }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #101827;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
         th {
-            background: #11796f;
-            color: white;
-            padding: 12px;
-            text-align: left;
+            display: none;
         }
-
         td {
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
         }
-
-        tr:hover {
-            background: #f1f5f9;
+        td::before {
+            content: attr(data-label);
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            text-transform: uppercase;
         }
-
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 15px;
-            background: #11796f;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-        }
-
-        .back-btn:hover {
-            background: #0f6b63;
-        }
-    </style>
+    }
+</style>
 </head>
-
 <body>
+<header class="topbar">
+    <a class="brand" href="{% url 'home' %}">Productify</a>
+    <nav class="nav">
+        <a class="secondary" href="{% url 'home' %}">Dashboard</a>
+        <a href="{% url 'create' %}">Add Product</a>
+        <a class="secondary" href="{% url 'logout' %}">Logout</a>
+    </nav>
+</header>
 
-    <div class="container">
-
-        <a href="/create/" class="back-btn">← Back</a>
-
-        <h2>My Products</h2>
+<main>
+    <section class="container">
+        <div class="header-row">
+            <div>
+                <h1>My Products</h1>
+                <p class="muted">Only products added by {{ user.username }} are shown here.</p>
+            </div>
+            <a class="action" href="{% url 'create' %}">Add Product</a>
+        </div>
 
         <table>
             <tr>
@@ -90,23 +165,32 @@
                 <th>Price</th>
                 <th>Description</th>
                 <th>Email</th>
+                <th>Actions</th>
             </tr>
 
             {% for product in products %}
             <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.email }}</td>
+                <td data-label="Name">{{ product.name }}</td>
+                <td data-label="Price">{{ product.price }}</td>
+                <td data-label="Description">{{ product.description }}</td>
+                <td data-label="Email">{{ product.email }}</td>
+                <td data-label="Actions">
+                    <div class="actions">
+                        <a class="action" href="{% url 'edit_product' product.id %}">Edit</a>
+                        <form method="POST" action="{% url 'delete_product' product.id %}">
+                            {% csrf_token %}
+                            <button class="delete-button" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" style="text-align:center;">No products found</td>
+                <td colspan="5" style="text-align:center;">No products found.</td>
             </tr>
             {% endfor %}
         </table>
-
-    </div>
-
+    </section>
+</main>
 </body>
 </html>

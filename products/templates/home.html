@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productify Dashboard</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #142033;
+        background: #eef3f7;
+    }
+    .topbar {
+        background: #ffffff;
+        border-bottom: 1px solid #dbe4ee;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    .brand {
+        font-size: 22px;
+        font-weight: 800;
+        color: #11796f;
+        text-decoration: none;
+    }
+    .nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .nav a,
+    .button {
+        border: 0;
+        border-radius: 6px;
+        background: #11796f;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 9px 14px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+    }
+    .nav .secondary {
+        background: #dcefed;
+        color: #0f615b;
+    }
+    main {
+        width: min(1100px, calc(100% - 32px));
+        margin: 28px auto;
+    }
+    .hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: flex-end;
+        margin-bottom: 22px;
+    }
+    h1 {
+        margin: 0 0 6px;
+        font-size: 34px;
+        line-height: 1.2;
+    }
+    .muted {
+        color: #64748b;
+        margin: 0;
+    }
+    .stats {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 18px;
+    }
+    .panel {
+        background: #ffffff;
+        border: 1px solid #dbe4ee;
+        border-radius: 8px;
+        padding: 22px;
+        box-shadow: 0 14px 36px rgba(16, 30, 54, 0.08);
+    }
+    .metric {
+        font-size: 46px;
+        font-weight: 800;
+        margin: 8px 0 0;
+        color: #11796f;
+    }
+    .chart {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        align-items: end;
+        gap: 12px;
+        height: 260px;
+        padding-top: 18px;
+    }
+    .bar-wrap {
+        min-width: 0;
+        display: grid;
+        grid-template-rows: 1fr auto auto;
+        gap: 8px;
+        height: 100%;
+        text-align: center;
+    }
+    .bar {
+        align-self: end;
+        min-height: 8px;
+        border-radius: 6px 6px 2px 2px;
+        background: linear-gradient(180deg, #37bad1, #11796f);
+    }
+    .count {
+        font-weight: 800;
+        color: #142033;
+    }
+    .label {
+        color: #64748b;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    .recent {
+        margin-top: 18px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+    }
+    th, td {
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+        vertical-align: top;
+    }
+    th {
+        color: #475569;
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+    @media (max-width: 760px) {
+        .topbar, .hero {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+        .stats {
+            grid-template-columns: 1fr;
+        }
+        .chart {
+            gap: 7px;
+        }
+        .label {
+            font-size: 11px;
+        }
+    }
+</style>
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="{% url 'home' %}">Productify</a>
+    <nav class="nav">
+        <a href="{% url 'create' %}">Add Product</a>
+        <a class="secondary" href="{% url 'myproduct' %}">My Products</a>
+        <a class="secondary" href="{% url 'logout' %}">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div>
+            <h1>Dashboard</h1>
+            <p class="muted">Welcome, {{ user.username }}. Track the products you add each day.</p>
+        </div>
+        <a class="button" href="{% url 'create' %}">Add Product</a>
+    </section>
+
+    <section class="stats">
+        <div class="panel">
+            <p class="muted">Your total products</p>
+            <p class="metric">{{ products_total }}</p>
+        </div>
+        <div class="panel">
+            <p class="muted">Products added in the last 7 days</p>
+            <div class="chart">
+                {% for label in chart_labels %}
+                    <div class="bar-wrap">
+                        <div class="bar" data-index="{{ forloop.counter0 }}"></div>
+                        <div class="count" data-count-index="{{ forloop.counter0 }}">0</div>
+                        <div class="label">{{ label }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="panel recent">
+        <p class="muted">Recent products</p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Email</th>
+            </tr>
+            {% for product in recent_products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.email }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No products added yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+</main>
+
+{{ chart_values|json_script:"chart-values" }}
+<script>
+    const values = JSON.parse(document.getElementById("chart-values").textContent);
+    const maxValue = Math.max(...values, 1);
+
+    document.querySelectorAll(".bar").forEach((bar) => {
+        const value = values[Number(bar.dataset.index)] || 0;
+        bar.style.height = `${Math.max((value / maxValue) * 210, value ? 14 : 8)}px`;
+    });
+
+    document.querySelectorAll("[data-count-index]").forEach((count) => {
+        count.textContent = values[Number(count.dataset.countIndex)] || 0;
+    });
+</script>
+</body>
+</html>
