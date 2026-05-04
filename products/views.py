@@ -6,9 +6,25 @@ from django.db.models import Count
 from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ProductSerializer
 from .forms import ProductForm
 from .models import Product
+
+
+@api_view(['GET'])
+def api_products(request):
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def api_product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
 
 
 @login_required

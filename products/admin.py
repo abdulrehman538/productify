@@ -7,3 +7,5 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ["id", "name", "price"]
     search_fields = ["name", "description", "email"]
     list_filter = ["price"]
+
+    readonly_fields = ["email"]
