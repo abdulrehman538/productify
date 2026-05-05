@@ -11,11 +11,18 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# define BASE_DIR FIRST
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# load .env
+load_dotenv(BASE_DIR / ".env")
 
+# debug (after loading)
+print("ENV FILE PATH:", BASE_DIR / ".env")
+print("KEY:", os.environ.get("GROQ_API_KEY"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -38,8 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'products',
+    'notes',
     'rest_framework',
-    'drf_tutorial',
 ]
 
 MIDDLEWARE = [

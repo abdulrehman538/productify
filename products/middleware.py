@@ -16,6 +16,9 @@ class LoginRequiredMiddleware:
 
         if request.path.startswith("/static/"):
             return self.get_response(request)
+        
+        if request.path.startswith("/api/"):
+            return self.get_response(request)
 
         if not request.user.is_authenticated:
             if request.path != login_url:

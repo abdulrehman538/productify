@@ -1,169 +1,150 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% if product %}Edit Product{% else %}Add Product{% endif %}</title>
+{% extends "base.html" %}
+
+{% block title %}{% if product %}Edit Product{% else %}Add Product{% endif %}{% endblock %}
+
+{% block extra_css %}
 <style>
-    * { box-sizing: border-box; }
-    body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #17202a;
-        background: #eef3f7;
+    .submit-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 8fr) minmax(260px, 2fr);
+        align-items: start;
+        gap: 24px;
     }
-    .topbar {
-        background: #ffffff;
-        border-bottom: 1px solid #dbe4ee;
-        padding: 14px 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-    }
-    .brand {
-        color: #11796f;
-        font-size: 22px;
-        font-weight: 800;
-        text-decoration: none;
-    }
-    .nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    .nav a {
-        border-radius: 6px;
-        background: #dcefed;
-        color: #0f615b;
-        min-height: 38px;
-        padding: 9px 14px;
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 14px;
-    }
-    main {
-        width: min(520px, calc(100% - 32px));
-        margin: 32px auto;
-    }
-    .form-panel {
-        background: #ffffff;
-        border: 1px solid #dbe4ee;
-        border-radius: 8px;
-        box-shadow: 0 14px 36px rgba(16, 30, 54, 0.08);
-        padding: 34px;
-    }
-    h1 {
-        margin: 0 0 8px;
-        font-size: 28px;
-        line-height: 1.2;
-        color: #101827;
-    }
-    .subtitle {
-        margin: 0 0 28px;
-        color: #64748b;
-        font-size: 15px;
-        line-height: 1.5;
-    }
-    form p {
-        margin: 0 0 18px;
-    }
-    label {
-        display: block;
-        margin-bottom: 7px;
-        font-size: 14px;
-        font-weight: 700;
-        color: #253244;
-    }
-    input,
-    textarea {
-        width: 100%;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        background: #f8fafc;
-        color: #101827;
-        font: inherit;
-        padding: 12px 13px;
-        outline: none;
-        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-    }
-    textarea {
-        min-height: 120px;
-        resize: vertical;
-    }
-    input:focus,
-    textarea:focus {
-        border-color: #11796f;
-        background: #ffffff;
-        box-shadow: 0 0 0 4px rgba(17, 121, 111, 0.14);
-    }
-    .errorlist {
-        margin: 0 0 8px;
-        padding: 10px 12px;
-        list-style: none;
-        border-radius: 6px;
-        background: #fff1f2;
-        color: #be123c;
-        font-size: 14px;
-        line-height: 1.4;
-    }
+
     .save-button {
         width: 100%;
-        border: 0;
-        border-radius: 6px;
-        background: #11796f;
-        color: #ffffff;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 700;
-        padding: 13px 18px;
         margin-top: 8px;
-        box-shadow: 0 12px 26px rgba(17, 121, 111, 0.28);
+        padding: 13px 18px;
+        font-size: 16px;
     }
-    .save-button:hover {
-        background: #0f6b63;
+
+    .help-panel p {
+        margin-bottom: 18px;
     }
-    @media (max-width: 560px) {
-        .topbar {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .form-panel {
-            padding: 24px;
+
+    .ask-form {
+        display: grid;
+        gap: 12px;
+    }
+
+    .ask-button {
+        width: fit-content;
+        min-width: 92px;
+        background: var(--accent);
+        box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18);
+    }
+
+    .ask-button:hover {
+        background: #1d4ed8;
+    }
+
+    .ask-button:disabled {
+        background: #94a3b8;
+        cursor: wait;
+    }
+
+    .answer-box {
+        display: none;
+        margin-top: 18px;
+        border-radius: 6px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 15px;
+        line-height: 1.5;
+        padding: 14px;
+        white-space: pre-wrap;
+    }
+
+    .answer-box.is-error {
+        background: var(--danger-soft);
+        border-color: #fecdd3;
+        color: var(--danger);
+    }
+
+    @media (max-width: 820px) {
+        .submit-layout {
+            grid-template-columns: 1fr;
         }
     }
 </style>
-</head>
-<body>
-<header class="topbar">
-    <a class="brand" href="{% url 'home' %}">Productify</a>
-    <nav class="nav">
-        <a href="{% url 'home' %}">Dashboard</a>
-        <a href="{% url 'myproduct' %}">My Products</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </nav>
-</header>
+{% endblock %}
 
-<main>
-    <section class="form-panel">
-        <h1>{% if product %}Edit Product{% else %}Add Product{% endif %}</h1>
-        <p class="subtitle">
-            {% if product %}
-                Update this product in your catalog.
-            {% else %}
-                Enter the product details below and save them to your catalog.
-            {% endif %}
-        </p>
+{% block content %}
+<main class="page-wide">
+    <div class="submit-layout">
+        <section class="panel">
+            <h1>{% if product %}Edit Product{% else %}Add Product{% endif %}</h1>
+            <p class="muted">
+                {% if product %}
+                    Update this product in your catalog.
+                {% else %}
+                    Enter the product details below and save them to your catalog.
+                {% endif %}
+            </p>
 
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="save-button" type="submit">
-                {% if product %}Save Changes{% else %}Save Product{% endif %}
-            </button>
-        </form>
-    </section>
+            <form method="POST" style="margin-top: 28px;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="save-button" type="submit">
+                    {% if product %}Save Changes{% else %}Save Product{% endif %}
+                </button>
+            </form>
+        </section>
+
+        <aside class="panel help-panel">
+            <h2>Need help?</h2>
+            <p class="muted">Type a question and get help with product names, prices, descriptions, or contact details.</p>
+
+            <form class="ask-form" id="ask-form">
+                <label for="question">Your question</label>
+                <textarea id="question" name="question" placeholder="Example: Write a short description for a phone case"></textarea>
+                <button class="ask-button" id="ask-button" type="submit">Ask</button>
+            </form>
+
+            <div class="answer-box" id="answer-box"></div>
+        </aside>
+    </div>
 </main>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const askForm = document.getElementById("ask-form");
+    const askButton = document.getElementById("ask-button");
+    const answerBox = document.getElementById("answer-box");
+
+    askForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        answerBox.style.display = "block";
+        answerBox.classList.remove("is-error");
+        answerBox.textContent = "Thinking...";
+        askButton.disabled = true;
+
+        const formData = new FormData(askForm);
+
+        try {
+            const response = await fetch("{% url 'product_help' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: formData
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Something went wrong.");
+            }
+
+            answerBox.textContent = data.answer;
+        } catch (error) {
+            answerBox.classList.add("is-error");
+            answerBox.textContent = error.message;
+        } finally {
+            askButton.disabled = false;
+        }
+    });
+</script>
+{% endblock %}
