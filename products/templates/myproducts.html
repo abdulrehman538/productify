@@ -5,17 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Products</title>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,700&display=swap');
     * { box-sizing: border-box; }
     body {
         margin: 0;
         min-height: 100vh;
         font-family: Arial, Helvetica, sans-serif;
         color: #17202a;
-        background: #eef3f7;
+        background: #F0F8FF; /* Light sky blue background */
     }
     .topbar {
-        background: #ffffff;
-        border-bottom: 1px solid #dbe4ee;
+        background: #5B9BD5; /* Primary sky blue */
+        border-bottom: none;
         padding: 14px 24px;
         display: flex;
         align-items: center;
@@ -23,9 +24,12 @@
         gap: 16px;
     }
     .brand {
-        color: #11796f;
+        color: #ffffff; /* White text for brand on blue background */
         font-size: 22px;
         font-weight: 800;
+        font-family: 'Lato', sans-serif;
+        font-style: italic;
+        font-weight: 700;
         text-decoration: none;
     }
     .nav {
@@ -50,12 +54,12 @@
     }
     .nav a,
     .action {
-        background: #11796f;
+        background: #4A8AC4; /* Darker sky blue for buttons */
         color: #ffffff;
     }
     .nav .secondary {
-        background: #dcefed;
-        color: #0f615b;
+        background: #EBF5FF; /* Light sky blue for secondary buttons */
+        color: #4A8AC4; /* Darker sky blue text */
     }
     main {
         width: min(1000px, calc(100% - 32px));
