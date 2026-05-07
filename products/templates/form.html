@@ -79,6 +79,20 @@
     form p {
         margin: 0 0 18px;
     }
+    .field-group {
+        margin-bottom: 18px;
+    }
+    .seller-section {
+        border-top: 1px solid #e2e8f0;
+        margin-top: 22px;
+        padding-top: 22px;
+    }
+    .seller-section h2 {
+        color: #101827;
+        font-size: 20px;
+        line-height: 1.25;
+        margin: 0 0 16px;
+    }
     label {
         display: block;
         margin-bottom: 7px;
@@ -101,6 +115,58 @@
     textarea {
         min-height: 120px;
         resize: vertical;
+    }
+    input[readonly] {
+        background: #eef6fd;
+        color: #526173;
+        cursor: default;
+    }
+    .image-upload-row {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .image-input {
+        height: 1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        width: 1px;
+    }
+    .image-button {
+        align-items: center;
+        background: #87CEEB;
+        border-radius: 999px;
+        color: #12364a;
+        cursor: pointer;
+        display: inline-flex;
+        font-size: 15px;
+        font-weight: 800;
+        min-height: 42px;
+        padding: 11px 20px;
+        transition: background 0.18s ease, box-shadow 0.18s ease;
+    }
+    .image-button:hover {
+        background: #6bbfe3;
+        box-shadow: 0 10px 22px rgba(91, 155, 213, 0.22);
+    }
+    .info-icon {
+        align-items: center;
+        border: 1px solid #8ec7e9;
+        border-radius: 50%;
+        color: #367da9;
+        display: inline-flex;
+        font-size: 13px;
+        font-weight: 800;
+        height: 24px;
+        justify-content: center;
+        line-height: 1;
+        width: 24px;
+    }
+    .selected-image-name {
+        color: #64748b;
+        font-size: 14px;
     }
     input:focus,
     textarea:focus { /* Enhanced input field focus */
@@ -232,9 +298,49 @@
                 {% endif %}
             </p>
 
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
+
+                <div class="field-group">
+                    {{ form.name.errors }}
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+
+                <div class="field-group">
+                    {{ form.price.errors }}
+                    {{ form.price.label_tag }}
+                    {{ form.price }}
+                </div>
+
+                <div class="field-group">
+                    {{ form.image.errors }}
+                    <label>Product image</label>
+                    <div class="image-upload-row">
+                        <label class="image-button" for="{{ form.image.id_for_label }}">Insert Image</label>
+                        <span class="info-icon" title="Add image of the product">i</span>
+                        <span class="selected-image-name" id="selected-image-name">
+                            {% if product.image %}{{ product.image.name }}{% else %}No image selected{% endif %}
+                        </span>
+                    </div>
+                    {{ form.image }}
+                </div>
+
+                <div class="field-group">
+                    {{ form.description.errors }}
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+
+                <section class="seller-section">
+                    <h2>Seller Detail</h2>
+                    <div class="field-group">
+                        {{ form.email.errors }}
+                        {{ form.email.label_tag }}
+                        {{ form.email }}
+                    </div>
+                </section>
+
                 <button class="save-button" type="submit">
                     {% if product %}Save Changes{% else %}Save Product{% endif %}
                 </button>
@@ -259,6 +365,17 @@
     const askForm = document.getElementById("ask-form");
     const askButton = document.getElementById("ask-button");
     const answerBox = document.getElementById("answer-box");
+    const imageInput = document.getElementById("{{ form.image.id_for_label }}");
+    const selectedImageName = document.getElementById("selected-image-name");
+
+    if (imageInput && selectedImageName) {
+        imageInput.classList.add("image-input");
+        imageInput.addEventListener("change", () => {
+            selectedImageName.textContent = imageInput.files.length
+                ? imageInput.files[0].name
+                : "No image selected";
+        });
+    }
 
     askForm.addEventListener("submit", async (event) => {
         event.preventDefault();

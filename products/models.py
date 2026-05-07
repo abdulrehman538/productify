@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 class Product(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    image =models.ImageField(
+        upload_to='products/',
+        null=True,
+        blank=True
+    )
     price = models.IntegerField()
     description = models.TextField()
     email = models.EmailField()

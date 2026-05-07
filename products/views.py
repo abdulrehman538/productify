@@ -17,6 +17,8 @@ from rest_framework.response import Response
 from .serializers import ProductSerializer
 from .forms import ProductForm
 from .models import Product
+from rest_framework import generics
+
 
 
 # ---------------- API ENDPOINTS ---------------- #
@@ -140,12 +142,17 @@ def home(request):
 
 @login_required
 def create_product(request):
-    form = ProductForm(request.POST or None)
+    post_data = request.POST.copy() if request.method == "POST" else None
+    if post_data is not None:
+        post_data["email"] = request.user.email
+
+    form = ProductForm(post_data, request.FILES or None, user=request.user)
 
     if request.method == "POST":
         if form.is_valid():
             product = form.save(commit=False)
             product.owner = request.user
+            product.email = request.user.email
             product.save()
             return redirect("myproduct")
 
@@ -182,10 +189,21 @@ def my_products(request):
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id, owner=request.user)
-    form = ProductForm(request.POST or None, instance=product)
+    post_data = request.POST.copy() if request.method == "POST" else None
+    if post_data is not None:
+        post_data["email"] = request.user.email
+
+    form = ProductForm(
+        post_data,
+        request.FILES or None,
+        instance=product,
+        user=request.user,
+    )
 
     if request.method == "POST" and form.is_valid():
-        form.save()
+        product = form.save(commit=False)
+        product.email = request.user.email
+        product.save()
         return redirect("myproduct")
 
     return render(request, "form.html", {"form": form, "product": product})
@@ -199,3 +217,10 @@ def delete_product(request, product_id):
         product.delete()
 
     return redirect("myproduct")
+
+class ProductCreateAPIView(
+    generics.CreateAPIView
+
+):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
