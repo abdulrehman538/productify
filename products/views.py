@@ -21,7 +21,6 @@ from rest_framework import generics
 
 
 
-# ---------------- API ENDPOINTS ---------------- #
 
 @api_view(['GET'])
 def api_products(request):
@@ -37,7 +36,6 @@ def api_product_detail(request, product_id):
     return Response(serializer.data)
 
 
-# ---------------- GROQ AI FUNCTION ---------------- #
 
 @login_required
 @require_POST
@@ -184,6 +182,12 @@ def user_logout(request):
 def my_products(request):
     products = Product.objects.filter(owner=request.user).order_by("-created_at")
     return render(request, "myproducts.html", {"products": products})
+
+
+@login_required
+def product_record(request, product_id):
+    product = get_object_or_404(Product, id=product_id, owner=request.user)
+    return render(request, "record_page.html", {"product": product})
 
 
 @login_required
