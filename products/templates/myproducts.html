@@ -99,7 +99,16 @@
             font-size: 1.25rem;
             font-weight: 800;
             margin: 0 0 0.5rem 0;
+        }
+
+        .product-name a {
             color: #334155;
+            text-decoration: none;
+        }
+
+        .product-name a:hover {
+            color: #5B9BD5;
+            text-decoration: underline;
         }
 
         .product-price {
@@ -163,7 +172,9 @@
                             </div>
                         {% endif %}
                         <div class="product-details">
-                            <h2 class="product-name">{{ product.name }}</h2>
+                            <h2 class="product-name">
+                                <a href="{% url 'product_record' product.id %}">{{ product.name }}</a>
+                            </h2>
                             <div class="product-price">${{ product.price }}</div>
                             <p class="product-description">{{ product.description|truncatewords:20 }}</p>
                             
