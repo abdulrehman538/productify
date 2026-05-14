@@ -25,6 +25,11 @@ urlpatterns = [
     path('api/', include('notes.urls')),           
 ]
 
+if settings.GOOGLE_LOGIN_ENABLED:
+    urlpatterns += [
+        path('accounts/', include('allauth.urls')),
+    ]
+
 urlpatterns += static(
     settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT

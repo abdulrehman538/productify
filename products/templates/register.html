@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account - Productify{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+    <a class="app-lockup" href="{% url 'login' %}">Productify</a>
+    <h1>Create account</h1>
+    <p class="muted" style="margin-bottom: 24px;">Start your Productify catalog with a username, email, and password.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="field-group">
+            {{ form.username.errors }}
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+        <div class="field-group">
+            {{ form.email.errors }}
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+        <div class="field-group">
+            {{ form.password1.errors }}
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+        </div>
+        <div class="field-group">
+            {{ form.password2.errors }}
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+        </div>
+
+        <button class="btn btn-primary" type="submit" style="width: 100%;">Create Account</button>
+    </form>
+
+    <div class="actions" style="display: grid; margin-top: 18px;">
+        {% if google_login_enabled %}
+            <a class="btn btn-secondary" href="/accounts/google/login/">Continue with Google</a>
+        {% endif %}
+        <a class="btn btn-accent" href="{% url 'login' %}">Already have an account? Login</a>
+    </div>
+</section>
+{% endblock %}

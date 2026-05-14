@@ -1,0 +1,191 @@
+Watching for file changes with StatReloader
+[14/May/2026 14:38:42] "GET /login/ HTTP/1.1" 200 6986
+[14/May/2026 14:38:42,111] - Broken pipe from ('127.0.0.1', 65244)
+[14/May/2026 14:40:24] "GET / HTTP/1.1" 200 8819
+[14/May/2026 14:40:33] "GET /logout/ HTTP/1.1" 302 0
+[14/May/2026 14:40:33] "GET /login/ HTTP/1.1" 200 6986
+[14/May/2026 14:40:36] "GET /register/ HTTP/1.1" 200 4258
+[14/May/2026 14:40:41] "GET /login/ HTTP/1.1" 200 6986
+[14/May/2026 14:40:46] "POST /login/ HTTP/1.1" 302 0
+[14/May/2026 14:40:46] "GET / HTTP/1.1" 200 8819
+[14/May/2026 14:40:50] "GET /create/ HTTP/1.1" 200 12152
+[14/May/2026 14:40:54] "GET /my_products/ HTTP/1.1" 200 13836
+[14/May/2026 14:40:54] "GET /media/products/pexels-pixabay-302769.jpg HTTP/1.1" 200 379208
+[14/May/2026 14:40:54] "GET /media/products/download.jfif HTTP/1.1" 200 4662
+[14/May/2026 14:40:54] "GET /media/products/download_k1M12a6.jfif HTTP/1.1" 200 7039
+[14/May/2026 14:41:02] "GET /my_products/?search=&min_price=&max_price=&ordering=name HTTP/1.1" 200 13836
+[14/May/2026 14:41:16] "GET /my_products/?search=gold&min_price=&max_price=&ordering=name HTTP/1.1" 200 8569
+[14/May/2026 14:41:21] "GET /my_products/?search=go&min_price=&max_price=&ordering=name HTTP/1.1" 200 8567
+[14/May/2026 14:41:26] "GET /my_products/?search=en&min_price=&max_price=&ordering=name HTTP/1.1" 200 9954
+[14/May/2026 14:41:40] "GET / HTTP/1.1" 200 8819
+[14/May/2026 14:41:49] "GET /my_products/ HTTP/1.1" 200 13836
+[14/May/2026 14:41:52] "GET /create/ HTTP/1.1" 200 12152
+[14/May/2026 14:41:56] "GET /logout/ HTTP/1.1" 302 0
+[14/May/2026 14:41:56] "GET /login/ HTTP/1.1" 200 6986
+[14/May/2026 14:41:58] "GET /register/ HTTP/1.1" 200 4258
+[14/May/2026 14:42:37] "POST /register/ HTTP/1.1" 200 4436
+[14/May/2026 14:42:57] "POST /register/ HTTP/1.1" 200 4436
+[14/May/2026 14:43:14] "POST /register/ HTTP/1.1" 302 0
+[14/May/2026 14:43:14] "GET / HTTP/1.1" 200 8008
+[14/May/2026 14:43:17] "GET /logout/ HTTP/1.1" 302 0
+[14/May/2026 14:43:17] "GET /login/ HTTP/1.1" 200 6986
+C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\forms.py changed, reloading.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+    ~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(**check_kwargs)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\management\base.py", line 496, in check
+    all_issues = checks.run_checks(
+        app_configs=app_configs,
+    ...<2 lines>...
+        databases=databases,
+    )
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\checks\registry.py", line 89, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\checks\urls.py", line 44, in check_url_namespaces_unique
+    all_namespaces = _load_all_namespaces(resolver)
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\checks\urls.py", line 63, in _load_all_namespaces
+    url_patterns = getattr(resolver, "url_patterns", [])
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\urls\resolvers.py", line 729, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\urls\resolvers.py", line 722, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\AbdulProjects\urls.py", line 24, in <module>
+    path('', include('products.urls')),
+             ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\urls\conf.py", line 39, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\urls.py", line 4, in <module>
+    from . import views
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\views.py", line 21, in <module>
+    from .forms import ProductForm, RegisterForm
+ImportError: cannot import name 'RegisterForm' from 'products.forms' (C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\forms.py)
+C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\forms.py changed, reloading.
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+    ~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(**check_kwargs)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\management\base.py", line 496, in check
+    all_issues = checks.run_checks(
+        app_configs=app_configs,
+    ...<2 lines>...
+        databases=databases,
+    )
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\checks\registry.py", line 89, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\checks\urls.py", line 44, in check_url_namespaces_unique
+    all_namespaces = _load_all_namespaces(resolver)
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\core\checks\urls.py", line 63, in _load_all_namespaces
+    url_patterns = getattr(resolver, "url_patterns", [])
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\urls\resolvers.py", line 729, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\urls\resolvers.py", line 722, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\AbdulProjects\urls.py", line 24, in <module>
+    path('', include('products.urls')),
+             ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\abdulenv\Lib\site-packages\django\urls\conf.py", line 39, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Users\asus\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\urls.py", line 4, in <module>
+    from . import views
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\views.py", line 21, in <module>
+    from .forms import ProductForm, RegisterForm
+  File "C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\forms.py", line 4, in <module>
+    class RegisterForm(UserCreationForm):
+                       ^^^^^^^^^^^^^^^^
+NameError: name 'UserCreationForm' is not defined
+C:\Users\asus\OneDrive\Desktop\AbdulProjects\products\forms.py changed, reloading.
+Watching for file changes with StatReloader
+[14/May/2026 15:49:38] "GET /my_products/ HTTP/1.1" 200 14871
+[14/May/2026 15:49:38] "GET /media/products/download_k1M12a6.jfif HTTP/1.1" 200 7039
+[14/May/2026 15:49:38] "GET /media/products/download.jfif HTTP/1.1" 200 4662
+[14/May/2026 15:49:38] "GET /media/products/pexels-pixabay-302769.jpg HTTP/1.1" 200 379208
+Not Found: /favicon.ico
+[14/May/2026 15:49:38] "GET /favicon.ico HTTP/1.1" 404 5701
+[14/May/2026 15:49:42] "GET /my_products/ HTTP/1.1" 200 14871
+[14/May/2026 15:49:43] "GET /my_products/ HTTP/1.1" 200 14871
+[14/May/2026 15:49:44] "GET /my_products/ HTTP/1.1" 200 14871
+[14/May/2026 15:49:46] "GET /my_products/ HTTP/1.1" 200 14871
+[14/May/2026 15:49:48] "GET /create/ HTTP/1.1" 200 13736
+[14/May/2026 15:49:49] "GET / HTTP/1.1" 200 12875
+[14/May/2026 15:49:53] "GET /logout/ HTTP/1.1" 302 0
+[14/May/2026 15:49:53] "GET /login/ HTTP/1.1" 200 8649
+[14/May/2026 15:50:00] "POST /login/ HTTP/1.1" 302 0
+[14/May/2026 15:50:00] "GET / HTTP/1.1" 200 12875
+[14/May/2026 15:50:02] "GET / HTTP/1.1" 200 12875
+[14/May/2026 15:50:04] "GET / HTTP/1.1" 200 12875
+[14/May/2026 15:50:08] "GET /my_products/ HTTP/1.1" 200 14871

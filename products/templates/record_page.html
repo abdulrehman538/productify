@@ -1,300 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }} - Product Record</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,700&display=swap');
+{% extends "base.html" %}
 
-        * {
-            box-sizing: border-box;
-        }
+{% block title %}{{ product.name }} - Productify{% endblock %}
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
-        }
-
-        .navbar {
-            background-color: #5B9BD5;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .brand {
-            font-family: 'Lato', sans-serif;
-            font-style: italic;
-            font-weight: 700;
-            font-size: 28px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            color: #5B9BD5;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .record-card {
-            display: grid;
-            grid-template-columns: minmax(280px, 460px) 1fr;
-            background: white;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
-        }
-
-        .image-panel {
-            min-height: 420px;
-            background-color: #e2e8f0;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 100%;
-            min-height: 420px;
-            display: block;
-            object-fit: cover;
-        }
-
-        .no-image {
-            min-height: 420px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .record-details {
-            padding: 2rem;
-        }
-
-        .record-label {
-            color: #5B9BD5;
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-        }
-
-        .product-title {
-            margin: 0;
-            color: #0f172a;
-            font-size: 2.25rem;
-            line-height: 1.15;
-        }
-
-        .price {
-            margin: 1rem 0 1.5rem;
-            color: #5B9BD5;
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-
-        .section-title {
-            margin: 1.5rem 0 0.5rem;
-            color: #334155;
-            font-size: 1rem;
-        }
-
-        .description {
-            margin: 0;
-            color: #475569;
-            line-height: 1.7;
-            white-space: pre-line;
-        }
-
+{% block extra_head %}
+<style>
+    .record-card {
+        display: grid;
+        grid-template-columns: minmax(280px, 460px) 1fr;
+    }
+    .record-image,
+    .record-placeholder {
+        background: #e2e8f0;
+        height: 100%;
+        min-height: 420px;
+        object-fit: cover;
+        width: 100%;
+    }
+    .record-placeholder {
+        align-items: center;
+        color: #64748b;
+        display: flex;
+        font-weight: 700;
+        justify-content: center;
+    }
+    .record-details { padding: 2rem; }
+    .record-label {
+        color: var(--primary);
+        font-size: 0.8rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+        text-transform: uppercase;
+    }
+    .product-title {
+        color: #0f172a;
+        font-size: 2.25rem;
+        line-height: 1.15;
+        margin: 0;
+    }
+    .info-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 1.75rem;
+    }
+    .info-item {
+        background: var(--surface-soft);
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    .info-label {
+        color: var(--muted);
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+    }
+    .info-value {
+        color: #1e293b;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+    @media (max-width: 780px) {
+        .record-card,
         .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
-            margin-top: 1.75rem;
+            grid-template-columns: 1fr;
         }
-
-        .info-item {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.75rem;
-            padding: 1rem;
+        .record-image,
+        .record-placeholder {
+            min-height: 280px;
         }
+        .record-details { padding: 1.5rem; }
+        .product-title { font-size: 1.8rem; }
+    }
+</style>
+{% endblock %}
 
-        .info-label {
-            display: block;
-            color: #64748b;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
-        }
+{% block content %}
+<section class="page-header">
+    <div>
+        <h1>Product Record</h1>
+        <p class="muted">Review and manage this Productify listing.</p>
+    </div>
+    <a class="btn btn-secondary" href="{% url 'myproduct' %}">Back to Products</a>
+</section>
 
-        .info-value {
-            color: #1e293b;
-            font-weight: 700;
-            overflow-wrap: anywhere;
-        }
+<article class="card record-card">
+    <div>
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="record-image">
+        {% else %}
+            <div class="record-placeholder">No Image Available</div>
+        {% endif %}
+    </div>
 
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 2rem;
-        }
+    <div class="record-details">
+        <div class="record-label">Productify Listing</div>
+        <h2 class="product-title">{{ product.name }}</h2>
+        <div class="price" style="font-size: 1.6rem;">${{ product.price }}</div>
 
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.2rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-        }
+        <h3>Description</h3>
+        <p class="description">{{ product.description }}</p>
 
-        .btn-edit {
-            background-color: #5B9BD5;
-            color: white;
-        }
-
-        .btn-back {
-            background-color: #f1f5f9;
-            color: #475569;
-        }
-
-        .btn-delete {
-            background-color: #fee2e2;
-            color: #ef4444;
-        }
-
-        @media (max-width: 780px) {
-            .navbar {
-                padding: 1rem;
-            }
-
-            .main-container {
-                padding: 1rem;
-            }
-
-            .record-card {
-                grid-template-columns: 1fr;
-            }
-
-            .image-panel,
-            .product-image,
-            .no-image {
-                min-height: 280px;
-            }
-
-            .record-details {
-                padding: 1.5rem;
-            }
-
-            .product-title {
-                font-size: 1.8rem;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <nav class="navbar">
-        <a href="{% url 'home' %}" class="brand">Productify</a>
-        <div class="nav-links">
-            <a href="{% url 'home' %}">Dashboard</a>
-            <a href="{% url 'myproduct' %}">My Products</a>
-            <a href="{% url 'logout' %}">Logout</a>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Product ID</span>
+                <span class="info-value">#{{ product.id }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Owner</span>
+                <span class="info-value">{{ product.owner.username }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Contact Email</span>
+                <span class="info-value">{{ product.email }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Created At</span>
+                <span class="info-value">{{ product.created_at|date:"F d, Y H:i" }}</span>
+            </div>
         </div>
-    </nav>
 
-    <main class="main-container">
-        <a href="{% url 'myproduct' %}" class="back-link">Back to My Products</a>
-
-        <article class="record-card">
-            <div class="image-panel">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
-                {% else %}
-                    <div class="no-image">No Image Available</div>
-                {% endif %}
-            </div>
-
-            <div class="record-details">
-                <div class="record-label">Product Record</div>
-                <h1 class="product-title">{{ product.name }}</h1>
-                <div class="price">${{ product.price }}</div>
-
-                <h2 class="section-title">Description</h2>
-                <p class="description">{{ product.description }}</p>
-
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Product ID</span>
-                        <span class="info-value">#{{ product.id }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Owner</span>
-                        <span class="info-value">{{ product.owner.username }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Contact Email</span>
-                        <span class="info-value">{{ product.email }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Created At</span>
-                        <span class="info-value">{{ product.created_at|date:"F d, Y H:i" }}</span>
-                    </div>
-                </div>
-
-                <div class="actions">
-                    <a href="{% url 'edit_product' product.id %}" class="btn-action btn-edit">Edit Product</a>
-                    <a href="{% url 'myproduct' %}" class="btn-action btn-back">Back</a>
-                    <form action="{% url 'delete_product' product.id %}" method="POST" onsubmit="return confirm('Delete this product?')">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-action btn-delete">Delete Product</button>
-                    </form>
-                </div>
-            </div>
-        </article>
-    </main>
-
-</body>
-</html>
+        <div class="actions" style="margin-top: 2rem;">
+            <a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit Product</a>
+            <a href="{% url 'myproduct' %}" class="btn btn-secondary">Back</a>
+            <form action="{% url 'delete_product' product.id %}" method="POST" onsubmit="return confirm('Delete this product?')">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete Product</button>
+            </form>
+        </div>
+    </div>
+</article>
+{% endblock %}

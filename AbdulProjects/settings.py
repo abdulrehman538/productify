@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+from importlib.util import find_spec
 from dotenv import load_dotenv
 
 # define BASE_DIR FIRST
@@ -20,9 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # load .env
 load_dotenv(BASE_DIR / ".env")
 
-# debug (after loading)
-print("ENV FILE PATH:", BASE_DIR / ".env")
-print("KEY:", os.environ.get("GROQ_API_KEY"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -32,7 +30,9 @@ SECRET_KEY = 'django-insecure-pa7isfrjz7rve-sba@grbzhxmlouim^0(be4*t0eu%herxd0m&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
+GOOGLE_LOGIN_ENABLED = find_spec("allauth") is not None
 
 
 # Application definition
@@ -49,6 +49,15 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
+if GOOGLE_LOGIN_ENABLED:
+    INSTALLED_APPS += [
+        'django.contrib.sites',
+        'allauth',
+        'allauth.account',
+        'allauth.socialaccount',
+        'allauth.socialaccount.providers.google',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -59,6 +68,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'products.middleware.LoginRequiredMiddleware'
 ]
+
+if GOOGLE_LOGIN_ENABLED:
+    MIDDLEWARE += ['allauth.account.middleware.AccountMiddleware']
 
 ROOT_URLCONF = 'AbdulProjects.urls'
 
@@ -78,6 +90,40 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'AbdulProjects.wsgi.application'
+
+SITE_ID = 1
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+if GOOGLE_LOGIN_ENABLED:
+    AUTHENTICATION_BACKENDS += ['allauth.account.auth_backends.AuthenticationBackend']
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID', ''),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+            'key': '',
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 
 # Database

@@ -1,125 +1,19 @@
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% if product %}Edit Product{% else %}Add Product{% endif %}</title>
+{% extends "base.html" %}
+
+{% block title %}{% if product %}Edit Product{% else %}Add Product{% endif %} - Productify{% endblock %}
+
+{% block extra_head %}
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,700&display=swap');
-    * { box-sizing: border-box; }
-    body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #17202a;
-        background: #F0F8FF; /* Light sky blue background */
-    }
-    .topbar {
-        background: #5B9BD5; /* Primary sky blue */
-        border-bottom: none;
-        padding: 14px 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-    }
-    .brand {
-        color: #ffffff; /* White text for brand on blue background */
-        font-size: 22px;
-        font-weight: 800;
-        font-family: 'Lato', sans-serif;
-        font-style: italic;
-        font-weight: 700;
-        text-decoration: none;
-    }
-    .nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px; /* Keep gap */
-    }
-    .nav a {
-        border-radius: 6px; /* Keep border-radius */
-        background: #EBF5FF; /* Light sky blue for secondary buttons */
-        color: #4A8AC4; /* Darker sky blue text */
-        min-height: 38px;
-        padding: 9px 14px;
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 14px;
-    }
-    main {
-        width: calc(100% - 32px);
-        margin: 32px 16px;
-    }
     .submit-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 8fr) minmax(240px, 2fr);
         align-items: start;
+        display: grid;
         gap: 24px;
-    }
-    .form-panel {
-        background: #ffffff;
-        border: 1px solid #dbe4ee;
-        border-radius: 8px;
-        box-shadow: 0 14px 36px rgba(16, 30, 54, 0.08);
-        padding: 34px;
-    }
-    h1 {
-        margin: 0 0 8px;
-        font-size: 28px;
-        line-height: 1.2;
-        color: #101827;
-    }
-    .subtitle {
-        margin: 0 0 28px;
-        color: #64748b;
-        font-size: 15px;
-        line-height: 1.5;
-    }
-    form p {
-        margin: 0 0 18px;
-    }
-    .field-group {
-        margin-bottom: 18px;
+        grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
     }
     .seller-section {
         border-top: 1px solid #e2e8f0;
         margin-top: 22px;
         padding-top: 22px;
-    }
-    .seller-section h2 {
-        color: #101827;
-        font-size: 20px;
-        line-height: 1.25;
-        margin: 0 0 16px;
-    }
-    label {
-        display: block;
-        margin-bottom: 7px;
-        font-size: 14px;
-        font-weight: 700;
-        color: #253244;
-    }
-    input,
-    textarea {
-        width: 100%;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        background: #f8fafc;
-        color: #101827;
-        font: inherit;
-        padding: 12px 13px;
-        outline: none;
-        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-    }
-    textarea {
-        min-height: 120px;
-        resize: vertical;
-    }
-    input[readonly] {
-        background: #eef6fd;
-        color: #526173;
-        cursor: default;
     }
     .image-upload-row {
         align-items: center;
@@ -135,232 +29,115 @@
         width: 1px;
     }
     .image-button {
-        align-items: center;
-        background: #87CEEB;
-        border-radius: 999px;
-        color: #12364a;
-        cursor: pointer;
-        display: inline-flex;
-        font-size: 15px;
-        font-weight: 800;
-        min-height: 42px;
-        padding: 11px 20px;
-        transition: background 0.18s ease, box-shadow 0.18s ease;
-    }
-    .image-button:hover {
-        background: #6bbfe3;
-        box-shadow: 0 10px 22px rgba(91, 155, 213, 0.22);
-    }
-    .info-icon {
-        align-items: center;
-        border: 1px solid #8ec7e9;
-        border-radius: 50%;
-        color: #367da9;
-        display: inline-flex;
-        font-size: 13px;
-        font-weight: 800;
-        height: 24px;
-        justify-content: center;
-        line-height: 1;
-        width: 24px;
-    }
-    .selected-image-name {
-        color: #64748b;
-        font-size: 14px;
-    }
-    input:focus,
-    textarea:focus { /* Enhanced input field focus */
-        border-color: #5B9BD5; /* Primary sky blue */
-        background: #ffffff;
-        box-shadow: 0 0 0 4px rgba(91, 155, 213, 0.14); /* Sky blue shadow */
-    }
-    .errorlist {
-        margin: 0 0 8px;
-        padding: 10px 12px;
-        list-style: none;
-        border-radius: 6px;
-        background: #fff1f2;
-        color: #be123c;
-        font-size: 14px;
-        line-height: 1.4;
-    }
-    .save-button {
-        width: 100%;
-        border: 0;
-        border-radius: 6px; /* Keep border-radius */
-        background: #5B9BD5; /* Primary sky blue */
-        color: #ffffff;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 700;
-        padding: 13px 18px;
-        margin-top: 8px;
-        box-shadow: 0 12px 26px rgba(91, 155, 213, 0.28); /* Sky blue shadow */
-    }
-    .save-button:hover {
-        background: #4A8AC4; /* Darker sky blue on hover */
-    }
-    .help-panel {
-        background: #ffffff;
-        border: 1px solid #dbe4ee;
-        border-radius: 8px;
-        box-shadow: 0 14px 36px rgba(16, 30, 54, 0.08);
-        padding: 28px;
-    }
-    .help-panel h2 {
-        margin: 0 0 8px;
-        color: #101827;
-        font-size: 22px;
-        line-height: 1.25;
-    }
-    .help-panel p {
-        margin: 0 0 18px;
-        color: #64748b;
-        font-size: 15px;
-        line-height: 1.5;
-    }
-    .ask-form {
-        display: grid;
-        gap: 12px;
-    }
-    .ask-button {
-        width: fit-content;
-        min-width: 92px;
-        border: 0;
-        border-radius: 6px; /* Keep border-radius */
-        background: #4A8AC4; /* Darker sky blue for ask button */
-        color: #ffffff;
-        cursor: pointer;
-        font-size: 15px;
-        font-weight: 700;
-        padding: 12px 18px;
-    }
-    .ask-button:hover {
-        background: #3A7AC1; /* Even darker blue on hover */
-    }
-    .ask-button:disabled {
-        background: #A9C9E8; /* Lighter blue-grey for disabled */
-        cursor: wait;
+        background: #ebf5ff;
+        color: var(--primary-dark);
     }
     .answer-box {
-        display: none;
-        margin-top: 18px;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
         border-radius: 6px;
-        background: #f8fafc;
-        border: 1px solid #dbe4ee;
-        color: #17202a;
+        color: var(--text);
+        display: none;
         font-size: 15px;
         line-height: 1.5;
+        margin-top: 18px;
         padding: 14px;
         white-space: pre-wrap;
     }
     .answer-box.is-error {
-        background: #FEEAEA; /* Light red background for error */
-        border-color: #F5C6CB; /* Red border for error */
-        color: #DC3545; /* Standard error red */
+        background: #feeaea;
+        border-color: #f5c6cb;
+        color: #dc3545;
     }
-    @media (max-width: 560px) {
-        .topbar {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .submit-layout {
-            grid-template-columns: 1fr;
-        }
-        .form-panel {
-            padding: 24px;
-        }
-        .help-panel {
-            padding: 24px;
-        }
+    @media (max-width: 840px) {
+        .submit-layout { grid-template-columns: 1fr; }
     }
 </style>
-</head>
-<body>
-<header class="topbar">
-    <a class="brand" href="{% url 'home' %}">Productify</a>
-    <nav class="nav">
-        <a href="{% url 'home' %}">Dashboard</a>
-        <a href="{% url 'myproduct' %}">My Products</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </nav>
-</header>
+{% endblock %}
 
-<main>
-    <div class="submit-layout">
-        <section class="form-panel">
-            <h1>{% if product %}Edit Product{% else %}Add Product{% endif %}</h1>
-            <p class="subtitle">
-                {% if product %}
-                    Update this product in your catalog.
-                {% else %}
-                    Enter the product details below and save them to your catalog.
-                {% endif %}
-            </p>
+{% block content %}
+<section class="page-header">
+    <div>
+        <h1>{% if product %}Edit Product{% else %}Add Product{% endif %}</h1>
+        <p class="muted">
+            {% if product %}
+                Update this Productify listing.
+            {% else %}
+                Enter the product details and save them to your Productify catalog.
+            {% endif %}
+        </p>
+    </div>
+    <a class="btn btn-secondary" href="{% url 'myproduct' %}">Back to Products</a>
+</section>
 
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
+<div class="submit-layout">
+    <section class="panel">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-                <div class="field-group">
-                    {{ form.name.errors }}
-                    {{ form.name.label_tag }}
-                    {{ form.name }}
+            <div class="field-group">
+                {{ form.name.errors }}
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+
+            <div class="field-group">
+                {{ form.price.errors }}
+                {{ form.price.label_tag }}
+                {{ form.price }}
+            </div>
+
+            <div class="field-group">
+                {{ form.image.errors }}
+                <label>Product image</label>
+                <div class="image-upload-row">
+                    <label class="btn image-button" for="{{ form.image.id_for_label }}">Insert Image</label>
+                    <span class="muted" id="selected-image-name">
+                        {% if product.image %}{{ product.image.name }}{% else %}No image selected{% endif %}
+                    </span>
                 </div>
+                {{ form.image }}
+            </div>
 
+            <div class="field-group">
+                {{ form.description.errors }}
+                {{ form.description.label_tag }}
+                {{ form.description }}
+            </div>
+
+            <section class="seller-section">
+                <h2>Seller Detail</h2>
                 <div class="field-group">
-                    {{ form.price.errors }}
-                    {{ form.price.label_tag }}
-                    {{ form.price }}
+                    {{ form.email.errors }}
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
                 </div>
+            </section>
 
-                <div class="field-group">
-                    {{ form.image.errors }}
-                    <label>Product image</label>
-                    <div class="image-upload-row">
-                        <label class="image-button" for="{{ form.image.id_for_label }}">Insert Image</label>
-                        <span class="info-icon" title="Add image of the product">i</span>
-                        <span class="selected-image-name" id="selected-image-name">
-                            {% if product.image %}{{ product.image.name }}{% else %}No image selected{% endif %}
-                        </span>
-                    </div>
-                    {{ form.image }}
-                </div>
+            <button class="btn btn-primary" type="submit" style="width: 100%;">
+                {% if product %}Save Changes{% else %}Save Product{% endif %}
+            </button>
+        </form>
+    </section>
 
-                <div class="field-group">
-                    {{ form.description.errors }}
-                    {{ form.description.label_tag }}
-                    {{ form.description }}
-                </div>
+    <aside class="panel">
+        <h2>Need help?</h2>
+        <p class="muted" style="margin-bottom: 18px;">Ask for help with product names, prices, descriptions, or seller details.</p>
 
-                <section class="seller-section">
-                    <h2>Seller Detail</h2>
-                    <div class="field-group">
-                        {{ form.email.errors }}
-                        {{ form.email.label_tag }}
-                        {{ form.email }}
-                    </div>
-                </section>
-
-                <button class="save-button" type="submit">
-                    {% if product %}Save Changes{% else %}Save Product{% endif %}
-                </button>
-            </form>
-        </section>
-
-        <aside class="help-panel">
-            <h2>Need help?</h2>
-            <p>Type your question and get help with product names, prices, descriptions, or email details.</p>
-
-            <form class="ask-form" id="ask-form">
+        <form id="ask-form">
+            <div class="field-group">
                 <label for="question">Your question</label>
                 <textarea id="question" name="question" placeholder="Example: Help me write a short description for a phone case"></textarea>
-                <button class="ask-button" id="ask-button" type="submit">Ask</button>
-            </form>
+            </div>
+            <button class="btn btn-primary" id="ask-button" type="submit">Ask</button>
+        </form>
 
-            <div class="answer-box" id="answer-box"></div>
-        </aside>
-    </div>
-</main>
+        <div class="answer-box" id="answer-box"></div>
+    </aside>
+</div>
+{% endblock %}
+
+{% block scripts %}
 <script>
     const askForm = document.getElementById("ask-form");
     const askButton = document.getElementById("ask-button");
@@ -379,21 +156,16 @@
 
     askForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-
         answerBox.style.display = "block";
         answerBox.classList.remove("is-error");
         answerBox.textContent = "Thinking...";
         askButton.disabled = true;
 
-        const formData = new FormData(askForm);
-
         try {
             const response = await fetch("{% url 'product_help' %}", {
                 method: "POST",
-                headers: {
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                body: formData
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                body: new FormData(askForm)
             });
             const data = await response.json();
 
@@ -410,5 +182,4 @@
         }
     });
 </script>
-</body>
-</html>
+{% endblock %}

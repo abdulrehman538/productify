@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+# Stores one catalog product for a specific seller account.
 class Product(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -14,5 +16,6 @@ class Product(models.Model):
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Returns the product name anywhere Django needs a readable label.
     def __str__(self):
         return self.name
